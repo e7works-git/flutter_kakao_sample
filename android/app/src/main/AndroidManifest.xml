@@ -1,0 +1,73 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.e7works.flutter_kakao">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />      
+
+    <queries>
+        <!-- If your app checks for WEB support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="http" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <!-- If your app checks for SMS support -->
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="sms" />
+        </intent>
+        <!-- If your app checks for call support -->
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        <!-- If your app checks for file support -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="file" />
+        </intent>
+    </queries>
+    
+    <application
+        android:requestLegacyExternalStorage="true"
+        android:label="flutter_kakao"
+        android:name="${applicationName}"
+        android:icon="@mipmap/ic_launcher">
+        <!-- icon generator
+             https://icon.kitchen/i/H4sIAAAAAAAAA02QT0vEMBDFv8t4raDF7aFXD54EYfcmskzzr2GTTk1SRcp%2Bd1%2BCC16SmR9v3ptkpy8Om8k07qQ5XU6ziYZGyyGbjiZ3nHlFT%2Flz80kFQx2VKtH%2FNKefJnGJtTdLgcTemI%2Fs6ox1z8GvnErNyQYXaWN5C1XtlSwArPWZz%2BssRehafV9uhphREiQ9QnXX94OaNMYa6isa%2BodJDUC8OKw43j8dYGDdUXHwi4NEJVnbGm9IaWinAjQeOkrezchANUkpElsZjK2s2bxyvvw9F30UvYX6Ye%2BI00l83cVLxvltJpyRFbqP6y%2FbGKijWwEAAA%3D%3D
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/LaunchTheme"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize">
+            <!-- Specifies an Android theme to apply to this Activity as soon as
+                 the Android process has started. This theme is visible to the user
+                 while the Flutter UI initializes. After that, this theme continues
+                 to determine the Window background behind the Flutter UI. -->
+            <meta-data
+              android:name="io.flutter.embedding.android.NormalTheme"
+              android:resource="@style/NormalTheme"
+              />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!-- Don't delete the meta-data below.
+             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
+    </application>
+</manifest>
