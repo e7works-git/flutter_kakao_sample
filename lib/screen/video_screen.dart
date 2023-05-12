@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao/main.dart';
 import 'package:flutter_kakao/util/util.dart';
 import 'package:flutter_kakao/widget/chat/video_player_screen.dart';
 import 'package:flutter_kakao/widget/common/anchor.dart';
@@ -128,7 +127,6 @@ class _VideoScreenState extends State<VideoScreen> {
                           download() async {
                             Util.showToast("저장중입니다.");
                             await VChatCloudApi.download(
-                                roomId: roomId,
                                 file: widget.data.file,
                                 downloadPath: await Util.getDownloadPath());
                             Util.showToast("파일이 저장되었습니다.");

@@ -1,27 +1,23 @@
-import 'dart:convert';
-
-import 'package:intl/intl.dart';
 import 'package:vchatcloud_flutter_sdk/vchatcloud_flutter_sdk.dart';
 
-class ChatItem {
-  dynamic message;
+class ChatItem extends ChannelMessageModel {
+  late MessageType? _messageType = super.messageType;
 
-  /// 닉네임
-  String? nickName;
-  final String? clientKey;
-  final String? roomId;
+  @override
+  MessageType? get messageType => _messageType;
 
-  /// `MimeType`
-  final MimeType? mimeType;
+  set messageType(MessageType? value) {
+    _messageType = value;
+  }
 
-  /// `MessageType`
-  final MessageType? messageType;
+  late String? _clientKey = super.clientKey;
 
-  /// YYYYMMDDHH24MISS 포맷
-  late final DateTime messageDt;
+  @override
+  String? get clientKey => _clientKey;
 
-  /// 사용자 정보(json)
-  final dynamic userInfo;
+  set clientKey(String? value) {
+    _clientKey = value;
+  }
 
   /// 내가 발신한 채팅(clientKey가 동일한 경우)
   bool isMe = false;
@@ -65,37 +61,19 @@ class ChatItem {
       nextClientKey != clientKey ||
       (nextDt != null && nextDt?.minute != messageDt.minute);
 
-  ChatItem.fromJson(Map<String, dynamic> json)
-      : message = json['message'],
-        nickName = json['nickName'],
-        clientKey = json['clientKey'],
-        roomId = json['roomId'],
-        mimeType = MimeType.getByCode(json['mimeType']),
-        messageType = json['messageType'] is MessageType
-            ? json['messageType']
-            : MessageType.getByCode(json['messageType']),
-        userInfo = json['userInfo'] is String
-            ? jsonDecode(json['userInfo'])
-            : json['userInfo'] {
-    if (json['messageDt'] != null) {
-      var date = json['messageDt'] as String?;
-      if (date != null) {
-        messageDt = DateTime(
-          int.parse(date.substring(0, 4)),
-          int.parse(date.substring(4, 6)),
-          int.parse(date.substring(6, 8)),
-          int.parse(date.substring(8, 10)),
-          int.parse(date.substring(10, 12)),
-          int.parse(date.substring(12, 14)),
-        );
-      }
-    } else if (json['date'] != null) {
-      var date = json['date'] as String?;
-      if (date != null) {
-        messageDt = DateFormat("yyyy-MM-dd hh:mm:ss").parse(date);
-      }
-    } else {
-      messageDt = DateTime.now();
-    }
+  ChatItem.fromJson(Map<String, dynamic> json) : super.fromJson(json);
+
+  ChatItem.fromChannelMessageModel(ChannelMessageModel model)
+      : super.fromJson({
+          "message": model.message,
+          "nickName": model.nickName,
+          "clientKey": model.clientKey,
+          "roomId": model.roomId,
+          "mimeType": model.mimeType?.type,
+          "messageType": model.messageType,
+          "userInfo": model.userInfo
+        }) {
+    clientKey = super.clientKey;
+    messageType = super.messageType;
   }
 }

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.e7works.flutter_kakao">
+    package="com.vchatcloud.flutter.kakao">
     <uses-permission android:name="android.permission.INTERNET"/>
     
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

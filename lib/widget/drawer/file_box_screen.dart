@@ -337,7 +337,6 @@ class _FileBoxScreenState extends State<FileBoxScreen> {
               download() async {
                 await Future.wait(indexList.map(
                   (e) async => VChatCloudApi.download(
-                    roomId: roomId,
                     file: fileList[e],
                     downloadPath: await Util.getDownloadPath(),
                   ),

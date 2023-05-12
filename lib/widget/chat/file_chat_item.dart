@@ -50,7 +50,6 @@ class _FileChatItemState extends State<FileChatItem> {
       Util.showToast("파일을 저장중입니다.");
 
       await VChatCloudApi.download(
-        roomId: widget.data.roomId!,
         file: widget.file,
         downloadPath: await Util.getDownloadPath(),
       );
