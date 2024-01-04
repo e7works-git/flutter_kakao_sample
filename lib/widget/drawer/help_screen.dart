@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_messenger/util/util.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HelpScreen extends StatefulWidget {
@@ -46,11 +48,47 @@ class _HelpScreenState extends State<HelpScreen> {
               ...sendWhisper,
               const SizedBox(height: 30),
               ...translate,
+              const SizedBox(height: 30),
+              ...contactUs,
             ],
           ),
         ),
       ),
     );
+  }
+
+  List<Widget> get contactUs {
+    void copy() {
+      Clipboard.setData(const ClipboardData(text: 'support@vchatcloud.com'))
+          .then((_) => Util.showToast("주소가 복사되었습니다."));
+    }
+
+    return [
+      makeTitle("문의하기"),
+      const SizedBox(height: 8),
+      Text.rich(
+        TextSpan(
+          children: [
+            const TextSpan(text: "문의하실 내용은 "),
+            WidgetSpan(
+              child: GestureDetector(
+                onTap: copy,
+                child: const Text(
+                  "support@vchatcloud.com",
+                  style: TextStyle(color: Colors.blueAccent),
+                ),
+              ),
+            ),
+            const TextSpan(text: "으로 문의해주시기 바랍니다.")
+          ],
+        ),
+        style: const TextStyle(
+          color: Color(0xff333333),
+          height: 1.5,
+          fontSize: 14.0,
+        ),
+      ),
+    ];
   }
 
   List<Widget> get sendMessage {

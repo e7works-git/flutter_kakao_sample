@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao/vo/chat_item.dart';
+import 'package:flutter_messenger/vo/chat_item.dart';
 import 'package:vchatcloud_flutter_sdk/vchatcloud_flutter_sdk.dart';
 
 class ChannelStore extends ChangeNotifier {
   Channel? channel;
   List<ChatItem> chatLog = [];
   List<UserModel> clientList = [];
+  List<String> banClientList = [];
   Map<String, String> translateClientKeyMap = {};
 
   void setChannel(Channel channel) {

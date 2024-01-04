@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao/main.dart';
-import 'package:flutter_kakao/store/channel_store.dart';
-import 'package:flutter_kakao/store/emoji_store.dart';
-import 'package:flutter_kakao/widget/common/anchor.dart';
+import 'package:flutter_messenger/main.dart';
+import 'package:flutter_messenger/store/channel_store.dart';
+import 'package:flutter_messenger/store/emoji_store.dart';
+import 'package:flutter_messenger/widget/common/anchor.dart';
 import 'package:provider/provider.dart';
 import 'package:vchatcloud_flutter_sdk/vchatcloud_flutter_sdk.dart';
 

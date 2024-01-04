@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao/store/player_store.dart';
+import 'package:flutter_messenger/store/player_store.dart';
 import 'package:provider/provider.dart';
+import 'package:vchatcloud_flutter_sdk/vchatcloud_flutter_sdk.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:vchatcloud_flutter_sdk/vchatcloud_flutter_sdk.dart';
 
 class VideoPlayerScreen extends StatefulWidget {
   final FileModel file;
@@ -151,9 +151,9 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       "다운로드 안내",
                       style: TextStyle(

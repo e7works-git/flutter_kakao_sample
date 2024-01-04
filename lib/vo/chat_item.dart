@@ -22,6 +22,8 @@ class ChatItem extends ChannelMessageModel {
   /// 내가 발신한 채팅(clientKey가 동일한 경우)
   bool isMe = false;
 
+  bool isDeleteChatting = false;
+
   /// 번역된 채팅 여부
   bool translated = false;
 
@@ -71,7 +73,8 @@ class ChatItem extends ChannelMessageModel {
           "roomId": model.roomId,
           "mimeType": model.mimeType?.type,
           "messageType": model.messageType,
-          "userInfo": model.userInfo
+          "userInfo": model.userInfo,
+          "messageDt": model.messageDt,
         }) {
     clientKey = super.clientKey;
     messageType = super.messageType;

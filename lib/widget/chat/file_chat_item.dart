@@ -1,11 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao/util/util.dart';
-import 'package:flutter_kakao/vo/chat_item.dart';
-import 'package:flutter_kakao/widget/chat/chat_base_item.dart';
-import 'package:flutter_kakao/widget/common/anchor.dart';
-import 'package:flutter_kakao/widget/common/text_middle_ellipsis.dart';
+import 'package:flutter_messenger/util/util.dart';
+import 'package:flutter_messenger/vo/chat_item.dart';
+import 'package:flutter_messenger/widget/chat/chat_base_item.dart';
+import 'package:flutter_messenger/widget/common/anchor.dart';
+import 'package:flutter_messenger/widget/common/text_middle_ellipsis.dart';
 import 'package:vchatcloud_flutter_sdk/vchatcloud_flutter_sdk.dart';
 
 class FileChatItem extends StatefulWidget {

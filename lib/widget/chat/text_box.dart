@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao/util/util.dart';
-import 'package:flutter_kakao/vo/chat_item.dart';
-import 'package:flutter_kakao/widget/chat/open_graph_item.dart';
-import 'package:flutter_kakao/widget/common/anchor.dart';
+import 'package:flutter_messenger/util/util.dart';
+import 'package:flutter_messenger/vo/chat_item.dart';
+import 'package:flutter_messenger/widget/chat/open_graph_item.dart';
+import 'package:flutter_messenger/widget/common/anchor.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vchatcloud_flutter_sdk/vchatcloud_flutter_sdk.dart';
 
@@ -36,10 +36,13 @@ class TextBox extends StatelessWidget {
       texts.add(
         TextSpan(
           text: n,
-          style: const TextStyle(
-            color: Color(0xff333333),
-            decoration: null,
-            fontSize: 14,
+          style: TextStyle(
+            color: data.isDeleteChatting
+                ? const Color(0xff999999)
+                : const Color(0xff333333),
+            fontWeight:
+                data.isDeleteChatting ? FontWeight.w200 : FontWeight.normal,
+            fontSize: 14.0,
           ),
         ),
       );

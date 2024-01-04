@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao/custom_handler.dart';
-import 'package:flutter_kakao/main.dart';
-import 'package:flutter_kakao/screen/footer.dart';
-import 'package:flutter_kakao/store/channel_store.dart';
-import 'package:flutter_kakao/store/user_store.dart';
-import 'package:flutter_kakao/util/logger.dart';
-import 'package:flutter_kakao/util/util.dart';
-import 'package:flutter_kakao/vo/chat_item.dart';
-import 'package:flutter_kakao/widget/common/anchor.dart';
+import 'package:flutter_messenger/custom_handler.dart';
+import 'package:flutter_messenger/main.dart';
+import 'package:flutter_messenger/screen/footer.dart';
+import 'package:flutter_messenger/store/channel_store.dart';
+import 'package:flutter_messenger/store/user_store.dart';
+import 'package:flutter_messenger/util/logger.dart';
+import 'package:flutter_messenger/util/util.dart';
+import 'package:flutter_messenger/vo/chat_item.dart';
+import 'package:flutter_messenger/widget/common/anchor.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vchatcloud_flutter_sdk/vchatcloud_flutter_sdk.dart';
@@ -31,6 +31,8 @@ class _LoginScreen extends State<LoginScreen> {
   int? imageIndex;
   Image? selectedImage;
   late final SharedPreferences storage;
+  bool termsIsChecked = false;
+  double loginBackgroundHeight = 220;
 
   @override
   void initState() {
@@ -84,52 +86,56 @@ class _LoginScreen extends State<LoginScreen> {
 
   void goLogin() async {
     if (loginController.text.trim().isEmpty) {
-      Util.showSnackBar(context, '이름을 입력해주세요.');
-    } else {
-      var channelStore = Provider.of<ChannelStore>(context, listen: false);
-      var nickName = loginController.text.trim();
-      if (storage.getString("clientKey") == null) {
-        storage.setString("clientKey", Util.getRandomString(10));
-      }
-      var clientKey = storage.getString("clientKey");
-      var user = UserModel(
-        roomId: roomId,
-        nickName: nickName,
-        userInfo: {"profile": imageIndex.toString()},
-        clientKey: clientKey,
+      return Util.showSnackBar(context, '이름을 입력해주세요.');
+    }
+    if (!termsIsChecked) {
+      return Util.showToast('약관에 동의해주세요.');
+    }
+
+    var channelStore = Provider.of<ChannelStore>(context, listen: false);
+    var nickName = loginController.text.trim();
+    if (storage.getString("clientKey") == null) {
+      storage.setString("clientKey", Util.getRandomString(10));
+    }
+    var clientKey = storage.getString("clientKey");
+    var user = UserModel(
+      roomId: roomId,
+      nickName: nickName,
+      userInfo: {"profile": imageIndex.toString()},
+      clientKey: clientKey,
+    );
+    storage.setString("nickName", user.nickName);
+    storage.setInt("imageIndex", imageIndex ?? 1);
+
+    try {
+      channelStore.setChannel(
+        await VChatCloud.connect(CustomHandler(), url: 'dev.vchatcloud.com'),
       );
-      storage.setString("nickName", user.nickName);
-      storage.setInt("imageIndex", imageIndex ?? 1);
 
-      try {
-        channelStore.setChannel(
-          await VChatCloud.connect(CustomHandler()),
-        );
+      var history = await channelStore.channel!.join(user);
+      if (context.mounted) {
+        var userStore = Provider.of<UserStore>(context, listen: false);
+        userStore.name = nickName;
+        userStore.changeIconIndex(imageIndex);
 
-        var history = await channelStore.channel!.join(user);
-        if (context.mounted) {
-          var userStore = Provider.of<UserStore>(context, listen: false);
-          userStore.name = nickName;
-          userStore.changeIconIndex(imageIndex);
+        // 히스토리 내용 추가
+        List<ChatItem> list = [];
+        list.addAll((history.body["history"] as List<dynamic>)
+            .reversed // 역순으로 추가
+            .map((e) => ChatItem.fromJson(e as Map<String, dynamic>)));
+        var channelStore = Provider.of<ChannelStore>(context, listen: false);
+        channelStore.setChatLog(list);
 
-          // 히스토리 내용 추가
-          List<ChatItem> list = [];
-          list.addAll((history.body["history"] as List<dynamic>)
-              .reversed // 역순으로 추가
-              .map((e) => ChatItem.fromJson(e as Map<String, dynamic>)));
-          var channelStore = Provider.of<ChannelStore>(context, listen: false);
-          channelStore.setChatLog(list);
-
-          Navigator.pushNamed(context, "/chat_screen");
-        }
-      } catch (e) {
-        VChatCloud.disconnect();
-        if (e is VChatCloudError) {
-          Util.showToast(e.message);
-        } else if (e is Error) {
-          logger.e("$e ${e.stackTrace}");
-          Util.showToast("알 수 없는 오류로 접속에 실패했습니다.");
-        }
+        Navigator.pushNamed(context, "/chat_screen");
+      }
+    } catch (e) {
+      if (e is VChatCloudError) {
+        logger.e(e.message);
+        VChatCloud.disconnect(VChatCloudResult.fromCode(e.code));
+      } else if (e is Error) {
+        logger.e("$e ${e.stackTrace}");
+        VChatCloud.disconnect(VChatCloudResult.systemError);
+        Util.showToast("알 수 없는 오류로 접속에 실패했습니다.");
       }
     }
   }
@@ -205,7 +211,7 @@ class _LoginScreen extends State<LoginScreen> {
                             /* loginBG Area */
                             Container(
                               width: 280,
-                              height: 200,
+                              height: loginBackgroundHeight,
                               decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(15),
@@ -230,7 +236,7 @@ class _LoginScreen extends State<LoginScreen> {
                                         margin: const EdgeInsets.only(
                                           left: 35,
                                           right: 35,
-                                          top: 75,
+                                          top: 60,
                                         ),
                                         alignment: Alignment.topLeft,
                                         child: TextField(
@@ -282,7 +288,43 @@ class _LoginScreen extends State<LoginScreen> {
                                           ),
                                         ),
                                       ),
-                                      const SizedBox(height: 25),
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
+                                      Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Checkbox(
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                              visualDensity:
+                                                  VisualDensity.compact,
+                                              value: termsIsChecked,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  termsIsChecked =
+                                                      value ?? false;
+                                                });
+                                              },
+                                            ),
+                                            Anchor(
+                                              onTap: () =>
+                                                  Util.showTermsDialog(context),
+                                              child: const Text(
+                                                "사용자 이용 약관",
+                                                style: TextStyle(
+                                                  color: Colors.blue,
+                                                ),
+                                              ),
+                                            ),
+                                            const Text(
+                                              "에 동의합니다.",
+                                            ),
+                                          ]),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
                                       /* login btn */
                                       Anchor(
                                         onTap: goLogin,
@@ -320,7 +362,7 @@ class _LoginScreen extends State<LoginScreen> {
 
                         /* profile Image Area */
                         Positioned(
-                          bottom: 200 - (110 / 2),
+                          bottom: loginBackgroundHeight - (110 / 2),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

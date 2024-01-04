@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao/util/util.dart';
-import 'package:flutter_kakao/widget/chat/video_player_screen.dart';
-import 'package:flutter_kakao/widget/common/anchor.dart';
+import 'package:flutter_messenger/util/util.dart';
+import 'package:flutter_messenger/widget/chat/video_player_screen.dart';
+import 'package:flutter_messenger/widget/common/anchor.dart';
 import 'package:vchatcloud_flutter_sdk/vchatcloud_flutter_sdk.dart';
 import 'package:video_player/video_player.dart';
 

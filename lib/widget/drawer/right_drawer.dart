@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao/widget/drawer/client_list_screen.dart';
-import 'package:flutter_kakao/widget/drawer/file_box_screen.dart';
-import 'package:flutter_kakao/widget/drawer/help_screen.dart';
+import 'package:flutter_messenger/widget/drawer/client_list_screen.dart';
+import 'package:flutter_messenger/widget/drawer/file_box_screen.dart';
+import 'package:flutter_messenger/widget/drawer/help_screen.dart';
 
 class RightDrawer extends StatefulWidget {
   final TargetDrawer target;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_kakao/vo/chat_item.dart';
+import 'package:flutter_messenger/vo/chat_item.dart';
 
 class ChatTopDate extends StatelessWidget {
   final ChatItem data;

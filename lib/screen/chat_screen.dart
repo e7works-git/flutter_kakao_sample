@@ -6,27 +6,27 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_kakao/main.dart';
-import 'package:flutter_kakao/store/channel_store.dart';
-import 'package:flutter_kakao/store/emoji_store.dart';
-import 'package:flutter_kakao/store/player_store.dart';
-import 'package:flutter_kakao/util/logger.dart';
-import 'package:flutter_kakao/util/util.dart';
-import 'package:flutter_kakao/vo/chat_item.dart';
-import 'package:flutter_kakao/widget/chat/chat_top_date.dart';
-import 'package:flutter_kakao/widget/chat/emoji_chat_item.dart';
-import 'package:flutter_kakao/widget/chat/emoji_images.dart';
-import 'package:flutter_kakao/widget/chat/emoji_list.dart';
-import 'package:flutter_kakao/widget/chat/file_chat_item.dart';
-import 'package:flutter_kakao/widget/chat/image_chat_item.dart';
-import 'package:flutter_kakao/widget/chat/text_chat_item.dart';
-import 'package:flutter_kakao/widget/chat/user_join_item.dart';
-import 'package:flutter_kakao/widget/chat/user_leave_item.dart';
-import 'package:flutter_kakao/widget/chat/video_chat_item.dart';
-import 'package:flutter_kakao/widget/chat/whisper_chat_item.dart';
-import 'package:flutter_kakao/widget/common/anchor.dart';
-import 'package:flutter_kakao/widget/common/heart_icon.dart';
-import 'package:flutter_kakao/widget/drawer/right_drawer.dart';
+import 'package:flutter_messenger/main.dart';
+import 'package:flutter_messenger/store/channel_store.dart';
+import 'package:flutter_messenger/store/emoji_store.dart';
+import 'package:flutter_messenger/store/player_store.dart';
+import 'package:flutter_messenger/util/logger.dart';
+import 'package:flutter_messenger/util/util.dart';
+import 'package:flutter_messenger/vo/chat_item.dart';
+import 'package:flutter_messenger/widget/chat/chat_top_date.dart';
+import 'package:flutter_messenger/widget/chat/emoji_chat_item.dart';
+import 'package:flutter_messenger/widget/chat/emoji_images.dart';
+import 'package:flutter_messenger/widget/chat/emoji_list.dart';
+import 'package:flutter_messenger/widget/chat/file_chat_item.dart';
+import 'package:flutter_messenger/widget/chat/image_chat_item.dart';
+import 'package:flutter_messenger/widget/chat/text_chat_item.dart';
+import 'package:flutter_messenger/widget/chat/user_join_item.dart';
+import 'package:flutter_messenger/widget/chat/user_leave_item.dart';
+import 'package:flutter_messenger/widget/chat/video_chat_item.dart';
+import 'package:flutter_messenger/widget/chat/whisper_chat_item.dart';
+import 'package:flutter_messenger/widget/common/anchor.dart';
+import 'package:flutter_messenger/widget/common/heart_icon.dart';
+import 'package:flutter_messenger/widget/drawer/right_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:vchatcloud_flutter_sdk/constants.dart';
 import 'package:vchatcloud_flutter_sdk/vchatcloud_flutter_sdk.dart';
@@ -89,7 +89,7 @@ class ChatScreenState extends State<ChatScreen> {
   void dispose() {
     _scrollController.dispose();
     _focus.dispose();
-    channel.leave();
+    VChatCloud.disconnect(VChatCloudResult.success);
     super.dispose();
   }
 
@@ -390,8 +390,8 @@ class ChatScreenState extends State<ChatScreen> {
     emoji.initEmojiList();
     emoji.initChildEmojiList();
 
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         EmojiImages(),
         EmojiList(),
       ],
