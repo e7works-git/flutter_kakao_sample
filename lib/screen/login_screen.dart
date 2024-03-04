@@ -109,7 +109,7 @@ class _LoginScreen extends State<LoginScreen> {
 
     try {
       channelStore.setChannel(
-        await VChatCloud.connect(CustomHandler(), url: 'dev.vchatcloud.com'),
+        await VChatCloud.connect(CustomHandler()),
       );
 
       var history = await channelStore.channel!.join(user);
